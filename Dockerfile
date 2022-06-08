@@ -1,15 +1,14 @@
-FROM buildpack-deps:stretch
+# Builder image
+FROM alpine as builder
 
-LABEL maintainer="Sebastian Ramirez <tiangolo@gmail.com>"
+LABEL maintainer="Kaylen Dart <actuallyori@gmail.com>"
 
 # Versions of Nginx and nginx-rtmp-module to use
-ENV NGINX_VERSION nginx-1.18.0
-ENV NGINX_RTMP_MODULE_VERSION 1.2.1
+ENV NGINX_VERSION nginx-1.21.6
+ENV NGINX_RTMP_MODULE_VERSION 1.2.2
 
 # Install dependencies
-RUN apt-get update && \
-    apt-get install -y ca-certificates openssl libssl-dev && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add build-base linux-headers pcre2-dev openssl-dev zlib-dev --no-cache
 
 # Download and decompress Nginx
 RUN mkdir -p /tmp/build/nginx && \
@@ -44,6 +43,16 @@ RUN cd /tmp/build/nginx/${NGINX_VERSION} && \
     make install && \
     mkdir /var/lock/nginx && \
     rm -rf /tmp/build
+
+FROM alpine
+
+RUN apk add curl ca-certificates openssl pcre2-dev --no-cache
+
+COPY --from=builder /etc/nginx /etc/nginx
+COPY --from=builder /run/nginx /run/nginx
+COPY --from=builder /usr/local/nginx /usr/local/nginx
+COPY --from=builder /usr/local/sbin/nginx /usr/local/sbin/nginx
+COPY --from=builder /var/log/nginx /var/log/nginx
 
 # Forward logs to Docker
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
