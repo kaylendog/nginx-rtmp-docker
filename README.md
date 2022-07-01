@@ -11,6 +11,7 @@ This repository is a fork of [tiangolo/nginx-rtmp-docker](https://github.com/tia
 ### Supported Architectures
 
 This image currently targets the following architectures:
+
 - linux/amd64
 - linux/arm64
 
@@ -43,15 +44,28 @@ rtmp {
         }
     }
 }
+
+http {
+    server {
+        listen 80;
+        listen [::]:80 ipv6only=on;
+
+        location / {
+            rtmp_stat all;
+        }
+    }
+}
 ```
 
 You can specify custom configuration for the RTMP server by either
+
 - Mounting a custom config file at `/etc/nginx/nginx.conf`
 - Creating a Dockerfile and copying a config file to `/etc/nginx/nginx.conf`
 
 The [`nginx-rtmp-module` documentation](https://github.com/arut/nginx-rtmp-module/wiki/Directives) provides a list of directives you can use in your configuration, as well as a couple of helpful examples.
 
 ### Using a Dockerfile
+
 ```Dockerfile
 FROM skyefuzz/nginx-rtmp
 COPY nginx.conf /etc/nginx/nginx.conf
