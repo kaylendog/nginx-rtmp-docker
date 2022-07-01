@@ -5,7 +5,7 @@ LABEL maintainer="Kaylen Dart <actuallyori@gmail.com>"
 
 # Versions of Nginx and nginx-rtmp-module to use
 ENV NGINX_VERSION nginx-1.21.6
-ENV NGINX_RTMP_MODULE_VERSION 1.2.2
+ENV NGINX_RTMP_MODULE_VERSION 1.2.2-r1
 
 # Install dependencies
 RUN apk add build-base linux-headers pcre2-dev openssl-dev zlib-dev --no-cache
@@ -19,7 +19,7 @@ RUN mkdir -p /tmp/build/nginx && \
 # Download and decompress RTMP module
 RUN mkdir -p /tmp/build/nginx-rtmp-module && \
     cd /tmp/build/nginx-rtmp-module && \
-    wget -O nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
+    wget -O nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz https://github.com/sergey-dryabzhinsky/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
     tar -zxf nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}.tar.gz && \
     cd nginx-rtmp-module-${NGINX_RTMP_MODULE_VERSION}
 
