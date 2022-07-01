@@ -1,4 +1,4 @@
-# nginx-rtmp [![Deploy](https://github.com/kaylendog/nginx-rtmp-docker/workflows/Deploy/badge.svg)](https://github.com/kaylendog/nginx-rtmp-docker/actions?query=workflow%3ADeploy)
+# nginx-rtmp-docker [![Deploy](https://github.com/kaylendog/nginx-rtmp-docker/workflows/Deploy/badge.svg)](https://github.com/kaylendog/nginx-rtmp-docker/actions?query=workflow%3ADeploy)
 
 [**Docker**](https://www.docker.com/) image with [**NGINX**](http://nginx.org/en/) using the [**nginx-rtmp-module**](https://github.com/arut/nginx-rtmp-module) module for live multimedia (video) streaming.
 
