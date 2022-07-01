@@ -46,7 +46,7 @@ RUN cd /tmp/build/nginx/${NGINX_VERSION} && \
 
 FROM alpine
 
-RUN apk add curl ca-certificates openssl pcre2-dev --no-cache
+RUN apk add curl ca-certificates openssl pcre2-dev bash tini gettext --no-cache
 
 COPY --from=builder /etc/nginx /etc/nginx
 COPY --from=builder /run/nginx /run/nginx
@@ -58,8 +58,15 @@ COPY --from=builder /var/log/nginx /var/log/nginx
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
+# Copy entrypoint file
+COPY entrypoint.sh /entrypoint.sh
+
 # Set up config file
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Expose ports
 EXPOSE 1935
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 80
+
+ENTRYPOINT [ "/sbin/tini", "--" ]
+CMD [ "bash", "/entrypoint.sh" ]
