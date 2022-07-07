@@ -68,5 +68,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 1935
 EXPOSE 80
 
-ENTRYPOINT [ "/sbin/tini", "--" ]
-CMD [ "bash", "/entrypoint.sh" ]
+ENTRYPOINT [ "/sbin/tini", "--", "/entrypoint.sh" ]
